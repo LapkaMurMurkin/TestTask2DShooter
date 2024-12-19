@@ -27,6 +27,7 @@ public class DeathScreen : MonoBehaviour
     {
         int sceneIndex = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(sceneIndex);
+        Time.timeScale = 1;
     }
 
     private void ExitGame()

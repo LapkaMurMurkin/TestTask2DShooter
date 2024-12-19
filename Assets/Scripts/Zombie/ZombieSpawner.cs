@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class ZombieSpawner : MonoBehaviour
 {
-    [SerializeField] private List<GameObject> _prefabs;
+    //[SerializeField] private List<GameObject> _prefabs;
+    [SerializeField] private Zombie _zombiePrefab;
+    [SerializeField] private List<ZombieSettings> _zombieTypes;
 
     private float _spawnDelay;
 
@@ -28,10 +30,9 @@ public class ZombieSpawner : MonoBehaviour
         float faceDirection = Random.Range(0, 2) * 2 - 1;
         Vector3 spawnPosition = Camera.main.ViewportToWorldPoint(new Vector3(faceDirection * 1.1f, 0, 10));
         spawnPosition.y = 0;
-        int zombieTypeIndex = Random.Range(0, _prefabs.Count);
-        
-        GameObject prefab = Instantiate(_prefabs[zombieTypeIndex], spawnPosition, new Quaternion(), transform);
-        Zombie zombie = prefab.GetComponent<Zombie>();
-        zombie.Initialize(faceDirection);
+        int zombieType = Random.Range(0, _zombieTypes.Count);
+
+        Zombie zombie = Instantiate(_zombiePrefab, spawnPosition, new Quaternion(), transform);
+        zombie.Initialize(_zombieTypes[zombieType], faceDirection);
     }
 }

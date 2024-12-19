@@ -5,11 +5,15 @@ using UnityEngine;
 
 public class Zombie : MonoBehaviour
 {
+    private ZombieSettings _zombieSettings;
     private ZombieView _view;
 
+
     private float _faceDirection;
-    [SerializeField] private int _health;
-    [SerializeField] private float _movementSpeed;
+    private int _health;
+    private float _movementSpeed;
+
+    private Animator _animator;
 
     public static Action<Vector3> OnDeath;
 
@@ -18,8 +22,20 @@ public class Zombie : MonoBehaviour
         transform.Translate(new Vector3(-_faceDirection * _movementSpeed * Time.deltaTime, 0, 0));
     }
 
-    public void Initialize(float faceDirection)
+    public void Initialize(ZombieSettings zombieSettings, float faceDirection)
     {
+        _zombieSettings = zombieSettings;
+
+        _health = _zombieSettings.Health;
+        _movementSpeed = _zombieSettings.MovementSpeed;
+
+        _animator = GetComponentInChildren<Animator>();
+        AnimatorOverrideController animatorOverrideController = new AnimatorOverrideController(_animator.runtimeAnimatorController);
+        List<KeyValuePair<AnimationClip, AnimationClip>> overrides = new List<KeyValuePair<AnimationClip, AnimationClip>>();
+        overrides.Add(new KeyValuePair<AnimationClip, AnimationClip>(animatorOverrideController.animationClips[0], _zombieSettings.AnimationClip));
+        animatorOverrideController.ApplyOverrides(overrides);
+        _animator.runtimeAnimatorController = animatorOverrideController;
+
         _view = GetComponent<ZombieView>();
         _view.Initialize(_health);
 

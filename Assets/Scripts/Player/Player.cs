@@ -24,6 +24,7 @@ public class Player : MonoBehaviour
     private PlayerLegsAnimatorController _legsAnimatorController;
 
     private AnimatorEvents _animatorEvents;
+
     private SoundEffects _soundEffects;
 
     public void Initialize()
@@ -42,6 +43,7 @@ public class Player : MonoBehaviour
         _legsAnimatorController = new PlayerLegsAnimatorController(_legsAnimator);
 
         _animatorEvents = GetComponentInChildren<AnimatorEvents>();
+        
         _soundEffects = ServiceLocator.Get<SoundEffects>();
 
         _animatorEvents.OnShot += TakeShot;
